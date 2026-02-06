@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rohit ❤️ Kalyani</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#ff4d6d" />
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        height: 100vh;
+        font-family: "Segoe UI", sans-serif;
+        background: radial-gradient(circle at top, #ff9a9e, #ff4d6d);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .card {
+        width: 90%;
+        max-width: 360px;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(12px);
+        border-radius: 22px;
+        padding: 26px 22px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        animation: popIn 0.8s ease;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* ✨ Glow only on final day */
+      .final-day {
+        animation: glow 2.5s ease-in-out infinite;
+      }
+
+      @keyframes glow {
+        0% {
+          box-shadow:
+            0 0 20px rgba(255, 255, 255, 0.25),
+            0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+        50% {
+          box-shadow:
+            0 0 35px rgba(255, 255, 255, 0.45),
+            0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+        100% {
+          box-shadow:
+            0 0 20px rgba(255, 255, 255, 0.25),
+            0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+      p {
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .date {
+        margin-top: 10px;
+        font-size: 18px;
+        opacity: 0.85;
+      }
+
+      .counter {
+        margin-top: 14px;
+        font-size: 15px;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 14px;
+        padding: 12px;
+      }
+
+      button {
+        margin-top: 20px;
+        background: white;
+        color: #ff4d6d;
+        border: none;
+        border-radius: 30px;
+        padding: 12px 22px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      /* ❤️ Floating hearts */
+      .heart {
+        position: fixed;
+        bottom: -20px;
+        font-size: 18px;
+        animation: floatUp 6s linear forwards;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.9;
+      }
+
+      @keyframes floatUp {
+        from {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateY(-120vh);
+          opacity: 0;
+        }
+      }
+
+      @keyframes popIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card" id="card"></div>
+
+    <script>
+      /* -------------------- Valentine Days -------------------- */
+      const days = [
+        {
+          title: "Rose Day 🌹",
+          date: "2026-02-07",
+          message:
+            "Just like a rose, you bring beauty, warmth, and color into my life. Every smile of yours makes my world bloom.",
+        },
+        {
+          title: "Propose Day 💍",
+          date: "2026-02-08",
+          message:
+            "I may not say it every day, but today I choose you — again. My heart feels at home with you.",
+        },
+        {
+          title: "Chocolate Day 🍫",
+          date: "2026-02-09",
+          message:
+            "Life with you is sweeter than any chocolate. Even the bitter days feel lighter with you beside me.",
+        },
+        {
+          title: "Teddy Day 🧸",
+          date: "2026-02-10",
+          message:
+            "Whenever life feels heavy, I hope I can be your comfort — just like a warm hug you never want to let go of.",
+        },
+        {
+          title: "Promise Day 🤝",
+          date: "2026-02-11",
+          message:
+            "I promise to stand by you — in chaos and calm, in laughter and silence. Always.",
+        },
+        {
+          title: "Hug Day 🤗",
+          date: "2026-02-12",
+          message:
+            "If I could, I’d wrap you in a hug that says everything my words sometimes can’t.",
+        },
+        {
+          title: "Happy Valentine’s Day ❤️Kalyani❤️",
+          date: "2026-02-14",
+          message:
+            "You are my today, my tomorrow, and my forever. Loving you is the easiest thing my heart has ever done.",
+        },
+      ];
+
+      let index = 0;
+      const card = document.getElementById("card");
+
+      /* Relationship start date */
+      const relationshipStart = new Date("2025-05-10T00:00:00");
+
+      function updateCounter() {
+        const now = new Date();
+        let diff = now - relationshipStart;
+
+        const pad = (n) => String(n).padStart(2, "0");
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        document.getElementById("counter").innerHTML =
+          `${pad(days)} days, ${pad(hours)} hours, ${pad(minutes)} minutes, ${pad(seconds)} seconds ❤️`;
+      }
+
+      function renderCard() {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const day = days[index];
+        const unlockDate = new Date(day.date);
+        card.classList.remove("final-day");
+
+        /* 🔒 Locked before day */
+        if (today < unlockDate) {
+          card.innerHTML = `
+            <h1>${day.title}</h1>
+            <p>This message will unlock on</p>
+            <p><b>${unlockDate.toDateString()}</b> 💖</p>
+            <button disabled>Locked 💖🔒</button>
+          `;
+          return;
+        }
+
+        /* 🔓 Unlocked */
+        const isLastDay = index === days.length - 1;
+
+        if (isLastDay) {
+          card.classList.add("final-day");
+          burstHearts();
+          card.innerHTML = `
+            <h1>${day.title}</h1>
+            <p>${day.message}</p>
+
+            <div class="counter" id="counter"></div>
+
+            <div class="date">10th May 2025 → Forever</div>
+          `;
+          updateCounter();
+          setInterval(updateCounter, 1000);
+        } else {
+          card.innerHTML = `
+            <h1>${day.title}</h1>
+            <p>${day.message}</p>
+            <div class="date">${unlockDate.toDateString()}</div>
+            <button onclick="next()">Next 💞➜</button>
+          `;
+        }
+      }
+
+      function next() {
+        if (index < days.length - 1) {
+          index++;
+          renderCard();
+        }
+      }
+
+      renderCard();
+
+      /* ❤️ Floating hearts always */
+      function createHeart() {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 20 + 14 + "px";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 6000);
+      }
+      setInterval(createHeart, 400);
+
+      /* 💥 Extra burst on final day */
+      function burstHearts() {
+        for (let i = 0; i < 25; i++) {
+          setTimeout(createHeart, i * 80);
+        }
+      }
+
+      /* PWA */
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("service-worker.js");
+      }
+    </script>
+  </body>
+</html>
