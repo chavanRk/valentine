@@ -294,8 +294,7 @@
         const unlockDate = new Date(day.date);
         card.classList.remove("final-day");
 
-        if (today > unlockDate) {
-          // if (today < unlockDate) {
+        if (today < unlockDate) {
           card.innerHTML = `
             <h1>${day.title}</h1>
             <p>This message will unlock on</p>
