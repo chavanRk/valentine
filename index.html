@@ -291,7 +291,7 @@
         today.setHours(0, 0, 0, 0);
 
         const day = days[index];
-        const unlockDate = new Date(day.date);
+        const unlockDate = new Date(day.date + "T00:00:00");
         card.classList.remove("final-day");
 
         if (today < unlockDate) {
